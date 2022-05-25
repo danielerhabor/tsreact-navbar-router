@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
 import Navbar from './Navbar';
 
@@ -9,25 +10,16 @@ import About from './pages/About';
 import styles from './App.module.css';
 
 const App: FC = () => {
-  let component;
-
-  switch (window.location.pathname) {
-    case '/':
-      component = <Home />;
-      break;
-
-    case '/pricing':
-      component = <Pricing />;
-      break;
-
-    case '/about':
-      component = <About />;
-      break;
-  }
   return (
     <>
       <Navbar />
-      <div className={styles.container}>{component}</div>
+      <div className={styles.container}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </div>
     </>
   );
 };

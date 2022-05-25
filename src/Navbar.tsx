@@ -1,32 +1,35 @@
-import { Children, FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
+import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 
 import styles from './Navbar.module.css';
 
 const Navbar: FC = () => {
   return (
     <nav className={styles.nav}>
-      <a href="/" className={styles.siteTitle}>
+      <Link to="/" className={styles.siteTitle}>
         Site Name
-      </a>
+      </Link>
       <ul>
-        <CustomLink href="/pricing">Pricing</CustomLink>
-        <CustomLink href="/about">About</CustomLink>
+        <CustomLink to="/pricing">Pricing</CustomLink>
+        <CustomLink to="/about">About</CustomLink>
       </ul>
     </nav>
   );
 };
 
-const CustomLink: FC<{ href: string; children: ReactNode }> = ({
-  href,
+const CustomLink: FC<{ to: string; children: ReactNode }> = ({
+  to,
   children,
   ...props
 }) => {
-  const path = window.location.pathname;
+  const resolvedPath = useResolvedPath(to);
+  const isActive = useMatch({ path: resolvedPath.pathname, end: true });
+
   return (
-    <li className={path === href ? styles.active : ''}>
-      <a href={href} {...props}>
+    <li className={isActive ? styles.active : ''}>
+      <Link to={to} {...props}>
         {children}
-      </a>
+      </Link>
     </li>
   );
 };
