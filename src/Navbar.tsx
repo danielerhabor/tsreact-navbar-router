@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { Children, FC, ReactNode } from 'react';
 
 import styles from './Navbar.module.css';
 
@@ -9,15 +9,25 @@ const Navbar: FC = () => {
         Site Name
       </a>
       <ul>
-        <li className={styles.active}>
-          <a href="/about">About</a>
-        </li>
-
-        <li>
-          <a href="/pricing">Pricing</a>
-        </li>
+        <CustomLink href="/pricing">Pricing</CustomLink>
+        <CustomLink href="/about">About</CustomLink>
       </ul>
     </nav>
+  );
+};
+
+const CustomLink: FC<{ href: string; children: ReactNode }> = ({
+  href,
+  children,
+  ...props
+}) => {
+  const path = window.location.pathname;
+  return (
+    <li className={path === href ? styles.active : ''}>
+      <a href={href} {...props}>
+        {children}
+      </a>
+    </li>
   );
 };
 
